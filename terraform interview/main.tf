@@ -117,10 +117,12 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock-new" {
     type = "S"
   }
 }
-resource "aws_s3_bucket_ownership_controls" "ownership" {
-  bucket = aws_s3_bucket.interview.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
+terraform {
+  backend "s3" {
+    bucket = "interview-08"
+    dynamodb_table = "terraform-state-lock-new-dynamo"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
   }
 }
 
